@@ -5,7 +5,8 @@
 # 2.1 - added possibility to limit number of containers (for less powerful machines like 13in mbp pre M1)
 
 VERSION='2.1'
-TARGETS_URL='https://raw.githubusercontent.com/nitupkcuf/ripper-wrapper/main/targets.json'
+#TARGETS_URL='https://raw.githubusercontent.com/nitupkcuf/ripper-wrapper/main/targets.json'
+TARGETS_URL='https://raw.githubusercontent.com/myvocabu/ripper-wrapper/main/targets.json'
 
 function print_help {
   echo -e "Usage: os_x_ripper.sh --mode install"
