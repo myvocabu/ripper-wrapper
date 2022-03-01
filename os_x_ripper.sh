@@ -23,6 +23,8 @@ function check_dependencies {
     echo "Please install docker first. https://www.docker.com/products/docker-desktop"
     exit 1
   fi
+  brew list jq || brew install jq
+  brew list truncate || brew install truncate
 }
 
 function check_params {
