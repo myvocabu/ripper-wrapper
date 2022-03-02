@@ -8,7 +8,8 @@ param ($Action, $Number=10, $Force=$false)
 
 
 $VERSION = '2.1'
-$TARGETS_URL = 'https://raw.githubusercontent.com/ValeryP/help-ukraine-win/main/web-ddos/public/targets.txt'
+# $TARGETS_URL = 'https://raw.githubusercontent.com/ValeryP/help-ukraine-win/main/web-ddos/public/targets.txt'
+$TARGETS_URL='https://raw.githubusercontent.com/myvocabu/ripper-wrapper/main/targets.json'
 $TARGETS_URL_BACKUP = 'https://raw.githubusercontent.com/nitupkcuf/ripper-wrapper/main/targets.json'
 $URLS
 
